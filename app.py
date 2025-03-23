@@ -4,6 +4,11 @@ import torch.nn as nn
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import joblib
+from flask_cors import CORS  # Import CORS
+
+# Enable CORS for all routes
+app = Flask(__name__)
+CORS(app)  # This will allow all domains to access the API
 
 # Define the LSTM model class
 class SunspotLSTM(nn.Module):
@@ -24,9 +29,6 @@ model.eval()
 
 # Load the scaler
 scaler = joblib.load('scaler.pkl')
-
-# Initialize Flask app
-app = Flask(__name__)
 
 # Simple route for testing
 @app.route('/')
@@ -53,4 +55,5 @@ def predict():
     return jsonify({"predicted_sunspot_number": prediction})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    import os
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
