@@ -28,6 +28,11 @@ scaler = joblib.load('scaler.pkl')
 # Initialize Flask app
 app = Flask(__name__)
 
+# Simple route for testing
+@app.route('/')
+def home():
+    return "Flask app is running!"
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.json["sequence"]
